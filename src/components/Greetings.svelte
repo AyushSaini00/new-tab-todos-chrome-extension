@@ -1,13 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { format } from "date-fns";
-  import EditableText from "./EditableText.svelte";
+  import { getItemFromChromeStorage } from "../lib/chrome";
+  import { userNameValueOnChromeStorage } from "../lib/store";
+  import { NAMESPACE_USER_NAME } from "../constants";
 
   let now = $state(new Date());
   onMount(() => {
     const timerId = setInterval(() => {
       now = new Date();
     }, 1000);
+
+    getItemFromChromeStorage(NAMESPACE_USER_NAME, userNameValueOnChromeStorage.set);
 
     // clean up the interval after component is unmounted
     return () => {
@@ -32,13 +36,14 @@
 
     return message;
   };
-  let name = $state("add your name");
 </script>
 
 <div class="flex justify-center text-3xl font-semibold mb-5 current-time">
   {formattedTime}
 </div>
 <div class="flex justify-center text-4xl greeting-message">
-  <span>{getGreeting()},&nbsp;</span>
-  <EditableText text={name} />
+  <span>{getGreeting()}</span>
+  {#if $userNameValueOnChromeStorage}
+    , {$userNameValueOnChromeStorage}
+  {/if}
 </div>

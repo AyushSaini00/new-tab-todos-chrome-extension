@@ -1,23 +1,27 @@
 <script lang="ts">
   type Props = {
     text: string;
+    placeholder: string;
     isDisabled?: boolean;
     handleOnSave?: (newText: string) => void;
+    autofocus?: boolean;
+    defaultEditing?: boolean;
   };
 
-  let { text, isDisabled = false, handleOnSave }: Props = $props();
-  let editing = $state(false);
+  let {
+    text,
+    placeholder,
+    isDisabled = false,
+    handleOnSave,
+    autofocus = false,
+    defaultEditing = false,
+  }: Props = $props();
+  let editing = $derived(defaultEditing);
   let inputValue = $derived(text);
-
-  let inputElement: HTMLInputElement | null = $state(null);
 
   const handleEditText = () => {
     editing = true;
     inputValue = text;
-    // Focus input after next tick
-    setTimeout(() => {
-      inputElement?.focus();
-    }, 0);
   };
 
   function handleBlur() {
@@ -28,9 +32,8 @@
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === "Enter") {
       const value = inputValue.trim();
-
-      if (value) {
-        handleOnSave?.(value);
+      if (value && typeof handleOnSave !== "undefined") {
+        handleOnSave(value);
         inputValue = "";
         editing = false;
       } else {
@@ -46,16 +49,17 @@
   <input
     id={`edit-${text}-input`}
     bind:value={inputValue}
-    bind:this={inputElement}
     onblur={handleBlur}
     onkeydown={handleKeydown}
     disabled={isDisabled}
+    {placeholder}
+    {autofocus}
   />
 {:else}
   <span
     ondblclick={handleEditText}
-    class="underline cursor-pointer"
+    class="cursor-pointer hover:underline"
     role="button"
-    tabindex="0">{text}</span
+    tabindex="0">{text || "double click to add"}</span
   >
 {/if}
