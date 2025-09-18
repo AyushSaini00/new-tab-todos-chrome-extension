@@ -1,10 +1,26 @@
 <script lang="ts">
   import type { Todo } from "../types";
+  import { onMount } from "svelte";
   import Checkbox from "./Checkbox.svelte";
   import EditableText from "./EditableText.svelte";
+  import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
+  import { NAMESPACE_USER_TODOS } from "../constants";
 
   let todos = $state<Todo[]>([]);
   let addInputKey = $state(0);
+
+  onMount(() => {
+    getItemFromChromeStorage(NAMESPACE_USER_TODOS, (value) => {
+      const storedTodos = Object.values(value) as Todo[];
+      if (Array.isArray(storedTodos)) {
+        todos.push(...storedTodos);
+      }
+    });
+  });
+
+  function persistTodos() {
+    saveItemOnChromeStorage(NAMESPACE_USER_TODOS, todos);
+  }
 
   function addTodo(newTodoItem: Todo["item"]) {
     todos.push({
@@ -13,6 +29,7 @@
       completed: false,
     });
     addInputKey++;
+    persistTodos();
   }
 
   function updateTodo(todoId: Todo["id"], updatedTodoText: Todo["item"]) {
@@ -23,6 +40,7 @@
       ...todo,
       item: updatedTodoText,
     };
+    persistTodos();
   }
 
   function toggleTodoCompleted(todoId: Todo["id"]) {
@@ -34,6 +52,7 @@
         ...todo,
         completed: !todo.completed,
       };
+      persistTodos();
     }
   }
 </script>

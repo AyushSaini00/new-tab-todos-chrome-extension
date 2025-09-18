@@ -1,3 +1,5 @@
+const warningMessage = "Chrome storage API isn't available";
+
 export async function saveItemOnChromeStorage(
   key: string,
   value: any,
@@ -12,16 +14,8 @@ export async function saveItemOnChromeStorage(
     }
   } else {
     if (callbackFn) callbackFn(value);
-    console.warn("Chrome storage API isn't available");
+    console.warn(warningMessage);
   }
-
-  // chrome.storage.local.set({ [key]: value }, function () {
-  //   if (chrome.runtime.lastError) {
-  //     console.error("Error saving item:", chrome.runtime.lastError);
-  //   } else {
-  //     console.log("Item saved successfully:", key, value);
-  //   }
-  // });
 }
 
 export async function getItemFromChromeStorage(
@@ -35,30 +29,24 @@ export async function getItemFromChromeStorage(
 
       if (result[key] !== undefined) {
         callbackFn?.(result[key]);
-        // userNameValueOnChromeStorage.set(result[key]);
       }
     } catch (err) {
       console.error("Error loading data from chrome storage", err);
     }
   } else {
     if (value && typeof callbackFn !== "undefined") callbackFn(value);
-    console.warn("Chrome storage API isn't available");
+    console.warn(warningMessage);
   }
 }
 
-export function deleteItemFromChromeStorage(key: string) {
+export async function deleteItemFromChromeStorage(key: string) {
   if (typeof chrome !== "undefined" && chrome.storage) {
     try {
-    } catch (err) {}
-  } else {
-    console.warn("Chrome storage API isn't available");
-  }
-
-  chrome.storage.local.remove(key, function () {
-    if (chrome.runtime.lastError) {
-      console.error("Error deleting item:", chrome.runtime.lastError);
-    } else {
-      console.log("Item deleted successfully:", key);
+      await chrome.storage.local.remove(key);
+    } catch (err) {
+      console.error("Error removing data from chrome storage", err);
     }
-  });
+  } else {
+    console.warn(warningMessage);
+  }
 }
