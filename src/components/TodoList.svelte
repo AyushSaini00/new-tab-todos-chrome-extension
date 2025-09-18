@@ -6,7 +6,7 @@
   import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
   import { NAMESPACE_USER_TODOS } from "../constants";
 
-  let todos = $state<Todo[]>([]);
+  let { todos }: { todos: Todo[] } = $props();
   let addInputKey = $state(0);
 
   onMount(() => {

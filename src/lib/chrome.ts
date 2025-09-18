@@ -39,14 +39,19 @@ export async function getItemFromChromeStorage(
   }
 }
 
-export async function deleteItemFromChromeStorage(key: string) {
+export async function removeItemFromChromeStorage(
+  key: string,
+  callbackFn?: (props?: any) => void
+) {
   if (typeof chrome !== "undefined" && chrome.storage) {
     try {
       await chrome.storage.local.remove(key);
+      callbackFn?.();
     } catch (err) {
       console.error("Error removing data from chrome storage", err);
     }
   } else {
+    callbackFn?.();
     console.warn(warningMessage);
   }
 }
