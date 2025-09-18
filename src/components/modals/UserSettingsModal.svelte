@@ -31,7 +31,9 @@
     evt.preventDefault();
     removeItemFromChromeStorage(NAMESPACE_USER_TODOS, () => {
       todos.splice(0, todos.length);
-    }).then(() => {});
+    }).then(() => {
+      dialog?.close();
+    });
   };
 </script>
 

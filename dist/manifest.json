@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "New Tab Todos Chrome Extension",
+  "description": "Dead-simple Todos for new tab on chrome",
+  "version": "1.0.0",
+  "permissions": ["storage"],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
