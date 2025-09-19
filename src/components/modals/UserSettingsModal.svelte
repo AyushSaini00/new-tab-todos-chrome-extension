@@ -50,7 +50,8 @@
       <div class="flex justify-between mb-4 border-b border-gray-500 pt-4 px-4 pb-2">
         <div class="font-semibold">user settings</div>
         <button
-          onclick={() => {
+          onclick={(evt) => {
+            evt.preventDefault();
             if (dialog) dialog.close();
           }}
         >
