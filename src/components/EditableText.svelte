@@ -32,7 +32,7 @@
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === "Enter") {
       const value = inputValue.trim();
-      if (value && typeof handleOnSave !== "undefined") {
+      if (typeof handleOnSave !== "undefined") {
         handleOnSave(value);
         inputValue = "";
         editing = false;
@@ -59,6 +59,7 @@
   <span
     ondblclick={handleEditText}
     class="cursor-pointer hover:underline"
+    class:text-gray-400={!text}
     role="button"
     tabindex="0">{text || "double click to add"}</span
   >

@@ -2,7 +2,7 @@
   let { children, id, isChecked = false, isDisabled = false, handleOnChange } = $props();
 </script>
 
-<div class="flex w-full justify-center items-center gap-x-2.5">
+<div class="flex w-full justify-start items-center gap-x-2.5">
   <label class="flex">
     <input
       disabled={isDisabled}
