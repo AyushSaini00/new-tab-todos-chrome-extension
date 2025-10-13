@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import Checkbox from "./Checkbox.svelte";
   import EditableText from "./EditableText.svelte";
+  import TrashbinIcon from "./icons/TrashbinIcon.svelte";
   import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
   import { NAMESPACE_USER_TODOS } from "../constants";
 
@@ -23,6 +24,8 @@
   }
 
   function addTodo(newTodoItem: Todo["item"]) {
+    if (!newTodoItem.length) return;
+
     todos.push({
       id: crypto.randomUUID(),
       item: newTodoItem,
@@ -32,9 +35,23 @@
     persistTodos();
   }
 
+  function removeTodo(todoId: Todo["id"]) {
+    const idx = todos.findIndex((todo) => todo.id === todoId);
+    todos.splice(idx, 1);
+
+    persistTodos();
+  }
+
   function updateTodo(todoId: Todo["id"], updatedTodoText: Todo["item"]) {
     const idx = todos.findIndex((todo) => todo.id === todoId);
+    if (idx === -1) return;
+
     const todo = todos[idx];
+
+    if (!updatedTodoText.length) {
+      removeTodo(todoId);
+      return;
+    }
 
     todos[idx] = {
       ...todo,
@@ -58,9 +75,9 @@
 </script>
 
 <div class="mt-30 flex flex-col w-full items-center">
-  <ul class="flex flex-col w-full max-w-lg items-start gap-y-3">
+  <ul class="flex flex-col w-full max-w-xl items-start gap-y-3">
     {#each todos as todo, idx (todo.id)}
-      <li>
+      <li class="flex items-center w-full group">
         <Checkbox
           id={todo.item}
           isChecked={todo.completed}
@@ -76,6 +93,12 @@
             />
           {/if}
         </Checkbox>
+        <button
+          class="flex h-max items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          onclick={() => removeTodo(todo.id)}
+        >
+          <TrashbinIcon class="hover:text-red-400" />
+        </button>
       </li>
     {/each}
     <li class="add-new-todo-input-block">
