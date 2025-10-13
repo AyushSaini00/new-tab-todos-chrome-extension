@@ -44,11 +44,12 @@
 
   function updateTodo(todoId: Todo["id"], updatedTodoText: Todo["item"]) {
     const idx = todos.findIndex((todo) => todo.id === todoId);
+    if (idx === -1) return;
+
     const todo = todos[idx];
 
     if (!updatedTodoText.length) {
-      todos.splice(idx, 1);
-      persistTodos();
+      removeTodo(todoId);
       return;
     }
 
