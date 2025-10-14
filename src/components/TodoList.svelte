@@ -99,6 +99,13 @@
     }}
     class="flex flex-col w-full max-w-xl items-start gap-y-3"
   >
+    <!-- FIX-ME: use todo.id as key
+       since sortablejs is updating the DOM instead of svelte (because that's how the library is made)
+       there are some caveats (like irregular order) as svelte tried to update the UI
+       so for now, we are using the entire obj as key (this is tbh similar to not using a key at all)
+       so svelte will recreate this list every time it is sorted
+       again, this is not a good approach, but workds for now. 
+  -->
     {#each todos as todo (todo)}
       <li class="flex items-center w-full group">
         <Checkbox
