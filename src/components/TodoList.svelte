@@ -1,13 +1,15 @@
 <script lang="ts">
   import type { Todo } from "../types";
+  import type { SortableEvent } from "sortablejs";
   import { onMount } from "svelte";
+  import Sortable from "./Sortable.svelte";
   import Checkbox from "./Checkbox.svelte";
   import EditableText from "./EditableText.svelte";
   import TrashbinIcon from "./icons/TrashbinIcon.svelte";
   import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
   import { NAMESPACE_USER_TODOS } from "../constants";
 
-  let { todos }: { todos: Todo[] } = $props();
+  let { todos = $bindable() }: { todos: Todo[] } = $props();
   let addInputKey = $state(0);
 
   onMount(() => {
@@ -72,11 +74,39 @@
       persistTodos();
     }
   }
+
+  function reOrderItems<T>(items: T[], oldIndex?: number, newIndex?: number) {
+    if (oldIndex === undefined || newIndex === undefined) return items;
+    if (oldIndex === newIndex) return items;
+
+    const copy = $state.snapshot(items);
+
+    const [movedItem] = copy.splice(oldIndex, 1);
+    copy.splice(newIndex, 0, movedItem);
+
+    return copy;
+  }
 </script>
 
-<div class="mt-30 flex flex-col w-full items-center">
-  <ul class="flex flex-col w-full max-w-xl items-start gap-y-3">
-    {#each todos as todo, idx (todo.id)}
+<div class="mt-30 flex flex-col gap-y-3 w-full items-center">
+  <Sortable
+    options={{
+      onEnd: (evt: SortableEvent) => {
+        const { oldIndex, newIndex } = evt;
+        todos = reOrderItems(todos, oldIndex, newIndex);
+        persistTodos();
+      },
+    }}
+    class="flex flex-col w-full max-w-xl items-start gap-y-3"
+  >
+    <!-- FIX-ME: use todo.id as key
+       since sortablejs is updating the DOM instead of svelte (because that's how the library is made)
+       there are some caveats (like irregular order) as svelte tried to update the UI
+       so for now, we are using the entire obj as key (this is tbh similar to not using a key at all)
+       so svelte will recreate this list every time it is sorted
+       again, this is not a good approach, but workds for now. 
+  -->
+    {#each todos as todo (todo)}
       <li class="flex items-center w-full group">
         <Checkbox
           id={todo.item}
@@ -101,25 +131,25 @@
         </button>
       </li>
     {/each}
-    <li class="add-new-todo-input-block">
-      <label class="flex items-center gap-x-2.5 cursor-pointer text-4xl">
-        <input
-          disabled={true}
-          class="w-6 h-6"
-          type="checkbox"
-          checked={false}
-          id="add your todo input checkbox"
+  </Sortable>
+  <div class="add-new-todo-input-block flex w-full max-w-xl">
+    <label class="flex items-center gap-x-2.5 cursor-pointer text-4xl">
+      <input
+        disabled={true}
+        class="w-6 h-6"
+        type="checkbox"
+        checked={false}
+        id="add your todo input checkbox"
+      />
+      {#key addInputKey}
+        <EditableText
+          text=""
+          placeholder="add todo..."
+          handleOnSave={addTodo}
+          defaultEditing={true}
+          autofocus={true}
         />
-        {#key addInputKey}
-          <EditableText
-            text=""
-            placeholder="add todo..."
-            handleOnSave={addTodo}
-            defaultEditing={true}
-            autofocus={true}
-          />
-        {/key}
-      </label>
-    </li>
-  </ul>
+      {/key}
+    </label>
+  </div>
 </div>

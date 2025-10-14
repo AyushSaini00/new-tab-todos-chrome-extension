@@ -14,7 +14,7 @@
 
 <main>
   <Greetings />
-  <TodoList {todos} />
+  <TodoList bind:todos />
 </main>
 <button class="cursor-pointer flex w-max" onclick={() => (showModal = true)}>
   <SettingsIcon />
