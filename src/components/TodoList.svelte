@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import type { Todo } from "../types";
   import type { SortableEvent } from "sortablejs";
-  import { onMount } from "svelte";
   import Sortable from "./Sortable.svelte";
   import Checkbox from "./Checkbox.svelte";
   import EditableText from "./EditableText.svelte";
   import TrashbinIcon from "./icons/TrashbinIcon.svelte";
+  import LayoutGridIcon from "./icons/LayoutGridIcon.svelte";
   import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
   import { NAMESPACE_USER_TODOS } from "../constants";
 
@@ -91,6 +92,7 @@
 <div class="mt-30 flex flex-col gap-y-3 w-full items-center">
   <Sortable
     options={{
+      handle: ".sortablejs-handle",
       onEnd: (evt: SortableEvent) => {
         const { oldIndex, newIndex } = evt;
         todos = reOrderItems(todos, oldIndex, newIndex);
@@ -108,6 +110,11 @@
   -->
     {#each todos as todo (todo)}
       <li class="flex items-center w-full group">
+        <div
+          class="flex cursor-grab opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        >
+          <LayoutGridIcon />
+        </div>
         <Checkbox
           id={todo.item}
           isChecked={todo.completed}
@@ -133,6 +140,7 @@
     {/each}
   </Sortable>
   <div class="add-new-todo-input-block flex w-full max-w-xl">
+    <div class="w-6 h-6"></div>
     <label class="flex items-center gap-x-2.5 cursor-pointer text-4xl">
       <input
         disabled={true}
