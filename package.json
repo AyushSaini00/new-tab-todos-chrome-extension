@@ -2,7 +2,7 @@
   "name": "new-tab-todos-chrome-extension",
   "description": "Dead-simple Todos for new tab on chrome",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
