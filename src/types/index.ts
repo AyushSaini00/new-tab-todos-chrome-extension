@@ -3,3 +3,7 @@ export type Todo = {
   item: string;
   completed: boolean;
 };
+
+export type StorageChanges = {
+  [key: string]: chrome.storage.StorageChange;
+};

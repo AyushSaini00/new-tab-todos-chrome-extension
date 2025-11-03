@@ -1,3 +1,5 @@
+import type { StorageChanges } from "../types";
+
 const warningMessage = "Chrome storage API isn't available";
 
 export async function saveItemOnChromeStorage(
@@ -53,5 +55,17 @@ export async function removeItemFromChromeStorage(
   } else {
     callbackFn?.();
     console.warn(warningMessage);
+  }
+}
+
+export function listenToStorageChanges(
+  callback: (changes: StorageChanges, namespace: string) => void
+) {
+  if (typeof chrome !== "undefined" && chrome.storage) {
+    chrome.storage.onChanged.addListener(callback);
+    return () => chrome.storage.onChanged.removeListener(callback);
+  } else {
+    console.warn(warningMessage);
+    return () => {};
   }
 }

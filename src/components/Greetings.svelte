@@ -1,9 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { format } from "date-fns";
-  import { getItemFromChromeStorage } from "../lib/chrome";
+  import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
   import { userNameValueOnChromeStorage } from "../lib/store";
-  import { NAMESPACE_USER_NAME } from "../constants";
+  import EyeSlashIcon from "./icons/EyeSlashIcon.svelte";
+  import EyeIcon from "./icons/EyeIcon.svelte";
+  import { NAMESPACE_HIDE_TODOS, NAMESPACE_USER_NAME } from "../constants";
+
+  let { hideTodos = $bindable() }: { hideTodos: boolean } = $props();
 
   let now = $state(new Date());
   onMount(() => {
@@ -36,10 +40,27 @@
 
     return message;
   };
+
+  const onHideTodosToggle = () => {
+    hideTodos = !hideTodos;
+    saveItemOnChromeStorage(NAMESPACE_HIDE_TODOS, hideTodos);
+  };
 </script>
 
-<div class="flex justify-center text-3xl font-semibold mb-5 current-time">
-  {formattedTime}
+<div class="flex justify-center text-3xl font-semibold mb-5 current-time gap-x-2 group">
+  <span>{formattedTime}</span>
+  <span>
+    <button
+      onclick={() => onHideTodosToggle()}
+      class="cursor-pointer opacity-0 group-hover:opacity-100"
+    >
+      {#if hideTodos}
+        <EyeIcon />
+      {:else}
+        <EyeSlashIcon />
+      {/if}
+    </button>
+  </span>
 </div>
 <div class="flex justify-center text-4xl greeting-message">
   <span>{getGreeting()}</span>
