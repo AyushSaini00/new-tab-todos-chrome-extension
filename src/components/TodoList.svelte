@@ -10,7 +10,8 @@
   import { getItemFromChromeStorage, saveItemOnChromeStorage } from "../lib/chrome";
   import { NAMESPACE_USER_TODOS } from "../constants";
 
-  let { todos = $bindable() }: { todos: Todo[] } = $props();
+  let { todos = $bindable(), hideTodos }: { todos: Todo[]; hideTodos: boolean } =
+    $props();
   let addInputKey = $state(0);
 
   onMount(() => {
@@ -89,7 +90,11 @@
   }
 </script>
 
-<div class="mt-30 flex flex-col gap-y-3 w-full items-center">
+<div
+  class="mt-30 flex flex-col gap-y-3 w-full items-center {hideTodos
+    ? 'opacity-0'
+    : 'opacity-100'}"
+>
   <Sortable
     options={{
       handle: ".sortablejs-handle",
