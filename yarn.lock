@@ -573,6 +573,11 @@
   resolved "https://registry.yarnpkg.com/@types/sortablejs/-/sortablejs-1.15.8.tgz#11ed555076046e00869a5ef85d1e7651e7a66ef6"
   integrity sha512-b79830lW+RZfwaztgs1aVPgbasJ8e7AXtZYHTELNXZPsERt4ymJdjV4OccDbHQAvHrCcFpbF78jkm0R6h/pZVg==
 
+"@types/trusted-types@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.7.tgz#baccb07a970b91707df3a3e8ba6896c57ead2d11"
+  integrity sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==
+
 "@yr/monotone-cubic-spline@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@yr/monotone-cubic-spline/-/monotone-cubic-spline-1.0.3.tgz#7272d89f8e4f6fb7a1600c28c378cc18d3b577b9"
@@ -644,6 +649,11 @@ detect-libc@^2.0.3, detect-libc@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-2.1.0.tgz#3ca811f60a7b504b0480e5008adacc660b0b8c4f"
   integrity sha512-vEtk+OcP7VBRtQZ1EJ3bdgzSfBjgnEalLTp5zjJrS+2Z1w2KZly4SBdac/WDU3hhsNAZ9E8SC96ME4Ey8MZ7cg==
 
+devalue@^5.6.3:
+  version "5.6.3"
+  resolved "https://registry.yarnpkg.com/devalue/-/devalue-5.6.3.tgz#fee7b50bf072f4a4cdf18d1f27de3ce92131f699"
+  integrity sha512-nc7XjUU/2Lb+SvEFVGcWLiKkzfw8+qHI7zn8WYXKkLMgfGSHbgCEaR6bJpev8Cm6Rmrb19Gfd/tZvGqx9is3wg==
+
 enhanced-resolve@^5.18.3:
   version "5.18.3"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.18.3.tgz#9b5f4c5c076b8787c78fe540392ce76a88855b44"
@@ -689,10 +699,10 @@ esm-env@^1.2.1:
   resolved "https://registry.yarnpkg.com/esm-env/-/esm-env-1.2.2.tgz#263c9455c55861f41618df31b20cb571fc20b75e"
   integrity sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA==
 
-esrap@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/esrap/-/esrap-2.1.0.tgz#70df8f20129df3ad82f20e306dc4000dd5947813"
-  integrity sha512-yzmPNpl7TBbMRC5Lj2JlJZNPml0tzqoqP5B1JXycNUwtqma9AKCO0M2wHrdgsHcy1WRW7S9rJknAMtByg3usgA==
+esrap@^2.2.2:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/esrap/-/esrap-2.2.3.tgz#cbc5a6aad5349697b78ef7af62704e733a50d2c1"
+  integrity sha512-8fOS+GIGCQZl/ZIlhl59htOlms6U8NvX6ZYgYHpRU/b6tVSh3uHkOHZikl3D4cMbYM0JlpBe+p/BkZEi8J9XIQ==
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.15"
 
@@ -1011,21 +1021,23 @@ svelte-check@^4.3.1:
     picocolors "^1.0.0"
     sade "^1.7.4"
 
-svelte@^5.38.1:
-  version "5.38.10"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.38.10.tgz#1e60d4335db88f644323a14ef7357bef2c287247"
-  integrity sha512-UY+OhrWK7WI22bCZ00P/M3HtyWgwJPi9IxSRkoAE2MeAy6kl7ZlZWJZ8RaB+X4KD/G+wjis+cGVnVYaoqbzBqg==
+svelte@^5.51.5:
+  version "5.51.5"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.51.5.tgz#42d03a54d848783df769a88752ae6cd7e1b7d037"
+  integrity sha512-/4tR5cLsWOgH3wnNRXnFoWaJlwPGbJanZPSKSD6nHM2y01dvXeEF4Nx7jevoZ+UpJpkIHh6mY2tqDncuI4GHng==
   dependencies:
     "@jridgewell/remapping" "^2.3.4"
     "@jridgewell/sourcemap-codec" "^1.5.0"
     "@sveltejs/acorn-typescript" "^1.0.5"
     "@types/estree" "^1.0.5"
+    "@types/trusted-types" "^2.0.7"
     acorn "^8.12.1"
     aria-query "^5.3.1"
     axobject-query "^4.1.0"
     clsx "^2.1.1"
+    devalue "^5.6.3"
     esm-env "^1.2.1"
-    esrap "^2.1.0"
+    esrap "^2.2.2"
     is-reference "^3.0.3"
     locate-character "^3.0.0"
     magic-string "^0.30.11"
